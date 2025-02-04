@@ -12,5 +12,5 @@ public class Hand {
   private boolean idDealer;
   private boolean isRiichi;
   private boolean isTsumo;
-  private List<String> spesialConditions;
+  private List<String> specialConditions;
 }

@@ -19,6 +19,7 @@ public class ScoreCalculatorController {
 
   @PostMapping("/calculate")
   public ScoreResult calculateScore(@RequestBody Hand hand) {
+    System.err.println("HAND" + hand);
     return scoreCalculatorService.calculateScore(hand);
   }
 }
