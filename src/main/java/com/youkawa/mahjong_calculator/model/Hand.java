@@ -9,7 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class Hand {
   private List<Tile> tiles;
-  private boolean idDealer;
+  private boolean isDealer;
   private boolean isRiichi;
   private boolean isTsumo;
   private List<String> specialConditions;
