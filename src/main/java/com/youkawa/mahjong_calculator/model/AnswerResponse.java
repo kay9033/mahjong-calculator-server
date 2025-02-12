@@ -12,4 +12,5 @@ public class AnswerResponse {
   private List<String> missingYaku;
   private List<String> extraYaku;
   private List<String> yaku;
+  private String message;
 }

@@ -22,4 +22,11 @@ public class QuestionService {
     Random random = new Random();
     return questionList.get(random.nextInt(questionList.size()));
   }
+
+  public Question getQuestionById(int id) {
+    return questionList.stream()
+        .filter(question -> question.getId() == id)
+        .findFirst()
+        .orElse(null);
+  }
 }
