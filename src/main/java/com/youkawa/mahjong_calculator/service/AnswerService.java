@@ -78,6 +78,10 @@ public class AnswerService {
       if (isPinfu(request)) {
         detectedYaku.add("平和");
       }
+
+      if (isTanyao(request)) {
+        detectedYaku.add("断么九")
+      }
     }
 
     if (isHonits(request)) {
@@ -214,6 +218,17 @@ public class AnswerService {
     for (List<Tile> meld : request.getTiles()) {
       if (!(meld.size() == 2 && meld.get(0).equals(meld.get(1)))) {
         return false;
+      }
+    }
+    return true;
+  }
+
+  private boolean isTanyao(AnswerRequest request) {
+    for (List<Tile> meld : request.getTiles()) {
+      for (Tile tile : meld) {
+        if (isYaochu(tile)) {
+          return false;
+        }
       }
     }
     return true;
