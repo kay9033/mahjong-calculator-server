@@ -90,6 +90,18 @@ public class AnswerService {
       if (isJunchan(request)) {
         detectedYaku.add("純チャン");
       }
+
+      if (isHaku(request)) {
+        detectedYaku.add("白");
+      }
+
+      if (isHatsu(request)) {
+        detectedYaku.add("發");
+      }
+
+      if (isChun(request)) {
+        detectedYaku.add("中");
+      }
     }
 
     if (isHonitsu(request)) {
@@ -276,6 +288,36 @@ public class AnswerService {
       }
     }
     return true;
+  }
+
+  private boolean isHaku(AnswerRequest request) {
+    boolean hasHaku = false;
+    for (List<Tile> meld : request.getTiles()) {
+      if (isKoutsu(meld) && meld.get(0).getSuit().equals("z") && meld.get(0).getNumber() == 5) {
+        hasHaku = true;
+      }
+    }
+    return hasHaku;
+  }
+
+  private boolean isHatsu(AnswerRequest request) {
+    boolean hasHatsu = false;
+    for (List<Tile> meld : request.getTiles()) {
+      if (isKoutsu(meld) && meld.get(0).getSuit().equals("z") && meld.get(0).getNumber() == 5) {
+        hasHatsu = true;
+      }
+    }
+    return hasHatsu;
+  }
+
+  private boolean isChun(AnswerRequest request) {
+    boolean hasChun = false;
+    for (List<Tile> meld : request.getTiles()) {
+      if (isKoutsu(meld) && meld.get(0).getSuit().equals("z") && meld.get(0).getNumber() == 5) {
+        hasChun = true;
+      }
+    }
+    return hasChun;
   }
 
 }
