@@ -25,6 +25,10 @@ public class AnswerService {
       return new AnswerResponse(false, null, null, null, "お題が見つかりません");
     }
 
+    if (!iswinningHand(request)) {
+      return new AnswerResponse(false, null, null, null, "和了形になっていません");
+    }
+
     List<String> missingYaku = new ArrayList<>();
     List<String> extraYaku = new ArrayList<>();
     List<String> userYaku = detectYaku(request);
@@ -47,6 +51,16 @@ public class AnswerService {
 
   }
 
+  private boolean iswinningHand(AnswerRequest request) {
+    int mentsuSize = 0;
+    for (List<Tile> meld : request.getTiles()) {
+      if (isKoutsu(meld) || isShuntsu(meld)) {
+        mentsuSize++;
+      }
+    }
+    return hasJantou(request) && mentsuSize == 4;
+  }
+
   private List<String> detectYaku(AnswerRequest request) {
     List<String> detectedYaku = new ArrayList<>();
 
@@ -67,6 +81,17 @@ public class AnswerService {
     }
 
     return detectedYaku;
+  }
+
+  private boolean hasJantou(AnswerRequest request) {
+    for (List<Tile> meld : request.getTiles()) {
+      if (meld.size() == 2) {
+        if (meld.get(0).equals(meld.get(1))) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   private boolean isKoutsu(List<Tile> meld) {
