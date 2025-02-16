@@ -80,7 +80,7 @@ public class AnswerService {
       }
 
       if (isTanyao(request)) {
-        detectedYaku.add("断么九")
+        detectedYaku.add("断么九");
       }
     }
 
