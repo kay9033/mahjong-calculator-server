@@ -8,4 +8,5 @@ import lombok.Data;
 public class Tile {
   private String suit;
   private int number;
+  private String nakiType;
 }
