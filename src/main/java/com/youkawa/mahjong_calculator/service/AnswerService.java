@@ -82,14 +82,18 @@ public class AnswerService {
       if (isTanyao(request)) {
         detectedYaku.add("断么九");
       }
+
+      if (isChanta(request)) {
+        detectedYaku.add("チャンタ");
+      }
+
+      if (isJunchan(request)) {
+        detectedYaku.add("純チャン");
+      }
     }
 
     if (isHonits(request)) {
       detectedYaku.add("混一色");
-    }
-
-    if (isChanta(request)) {
-      detectedYaku.add("チャンタ");
     }
 
     return detectedYaku;
@@ -170,6 +174,24 @@ public class AnswerService {
       for (Tile tile : meld) {
         if (isYaochu(tile)) {
           hasYaochu = true;
+        }
+      }
+      if (!hasYaochu) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private boolean isJunchan(AnswerRequest request) {
+    for (List<Tile> meld : request.getTiles()) {
+      boolean hasYaochu = false;
+      for (Tile tile : meld) {
+        if (isYaochu(tile)) {
+          hasYaochu = true;
+        }
+        if (tile.getSuit().equals("z")) {
+          return false;
         }
       }
       if (!hasYaochu) {
