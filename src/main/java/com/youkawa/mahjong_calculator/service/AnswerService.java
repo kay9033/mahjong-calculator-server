@@ -52,6 +52,10 @@ public class AnswerService {
   }
 
   private boolean iswinningHand(AnswerRequest request) {
+    if (isTitoitsu(request)) {
+      return true;
+    }
+
     int mentsuSize = 0;
     for (List<Tile> meld : request.getTiles()) {
       if (isKoutsu(meld) || isShuntsu(meld)) {
@@ -64,20 +68,24 @@ public class AnswerService {
   private List<String> detectYaku(AnswerRequest request) {
     List<String> detectedYaku = new ArrayList<>();
 
+    if (isToitoi(request)) {
+      detectedYaku.add("七対子");
+    } else {
+      if (isToitoi(request)) {
+        detectedYaku.add("対々和");
+      }
+
+      if (isPinfu(request)) {
+        detectedYaku.add("平和");
+      }
+    }
+
     if (isHonits(request)) {
       detectedYaku.add("混一色");
     }
 
     if (isChanta(request)) {
       detectedYaku.add("チャンタ");
-    }
-
-    if (isToitoi(request)) {
-      detectedYaku.add("対々和");
-    }
-
-    if (isPinfu(request)) {
-      detectedYaku.add("平和");
     }
 
     return detectedYaku;
@@ -194,6 +202,18 @@ public class AnswerService {
         if (meld.get(0).getSuit().equals("z")) {
           return false;
         }
+      }
+    }
+    return true;
+  }
+
+  private boolean isTitoitsu(AnswerRequest request) {
+    if (request.getTiles().size() != 7) {
+      return false;
+    }
+    for (List<Tile> meld : request.getTiles()) {
+      if (!(meld.size() == 2 && meld.get(0).equals(meld.get(1)))) {
+        return false;
       }
     }
     return true;
