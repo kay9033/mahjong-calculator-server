@@ -92,8 +92,12 @@ public class AnswerService {
       }
     }
 
-    if (isHonits(request)) {
+    if (isHonitsu(request)) {
       detectedYaku.add("混一色");
+    }
+
+    if (isChinitsu(request)) {
+      detectedYaku.add("清一色");
     }
 
     return detectedYaku;
@@ -149,7 +153,7 @@ public class AnswerService {
     return tile.getSuit().equals("z") || tile.getNumber() == 1 || tile.getNumber() == 9;
   }
 
-  private boolean isHonits(AnswerRequest request) {
+  private boolean isHonitsu(AnswerRequest request) {
     boolean isHonor = false;
     String suit = null;
     for (List<Tile> meld : request.getTiles()) {
@@ -166,6 +170,24 @@ public class AnswerService {
       }
     }
     return isHonor;
+  }
+
+  private boolean isChinitsu(AnswerRequest request) {
+    String suit = null;
+    for (List<Tile> meld : request.getTiles()) {
+      for (Tile tile : meld) {
+        if (tile.getSuit().equals("z")) {
+          return false;
+        } else {
+          if (suit == null) {
+            suit = tile.getSuit();
+          } else if (!tile.getSuit().equals(suit)) {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
   }
 
   private boolean isChanta(AnswerRequest request) {
