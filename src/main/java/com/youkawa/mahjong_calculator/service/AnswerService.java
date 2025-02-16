@@ -68,7 +68,7 @@ public class AnswerService {
   private List<String> detectYaku(AnswerRequest request) {
     List<String> detectedYaku = new ArrayList<>();
 
-    if (isToitoi(request)) {
+    if (isTitoitsu(request)) {
       detectedYaku.add("七対子");
     } else {
       if (isToitoi(request)) {
