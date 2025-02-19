@@ -3,8 +3,10 @@ package com.youkawa.mahjong_calculator.service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -104,6 +106,18 @@ public class AnswerService {
       if (isChun(request)) {
         detectedYaku.add("中");
       }
+
+      if (isIipeikou(request)) {
+        detectedYaku.add("一盃口");
+      }
+
+      if (isRyanpeikou(request)) {
+        detectedYaku.add("二盃口");
+      }
+
+      if (isIttsu(request)) {
+        detectedYaku.add("一気通貫");
+      }
     }
 
     if (isHonitsu(request)) {
@@ -112,14 +126,6 @@ public class AnswerService {
 
     if (isChinitsu(request)) {
       detectedYaku.add("清一色");
-    }
-
-    if (isIipeikou(request)) {
-      detectedYaku.add("一盃口");
-    }
-
-    if (isRyanpeikou(request)) {
-      detectedYaku.add("二盃口");
     }
 
     return detectedYaku;
@@ -350,6 +356,17 @@ public class AnswerService {
       }
     }
     return shuntsuCount.values().stream().filter(count -> count >= 2).count() == 2;
+  }
+
+  private boolean isIttsu(AnswerRequest request) {
+    Map<String, Set<Integer>> shuntsues = new HashMap<>();
+    for (List<Tile> meld : request.getTiles()) {
+      if (isShuntsu(meld)) {
+        shuntsues.putIfAbsent(meld.get(0).getSuit(), new HashSet<>());
+        shuntsues.get(meld.get(0).getSuit()).add(meld.get(0).getNumber());
+      }
+    }
+    return shuntsues.values().stream().anyMatch(set -> set.contains(1) && set.contains(4) && set.contains(7));
   }
 
 }
