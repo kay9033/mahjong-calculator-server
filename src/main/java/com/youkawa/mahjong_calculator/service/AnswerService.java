@@ -2,7 +2,9 @@ package com.youkawa.mahjong_calculator.service;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -110,6 +112,14 @@ public class AnswerService {
 
     if (isChinitsu(request)) {
       detectedYaku.add("清一色");
+    }
+
+    if (isIipeikou(request)) {
+      detectedYaku.add("一盃口");
+    }
+
+    if (isRyanpeikou(request)) {
+      detectedYaku.add("二盃口");
     }
 
     return detectedYaku;
@@ -318,6 +328,28 @@ public class AnswerService {
       }
     }
     return hasChun;
+  }
+
+  private boolean isIipeikou(AnswerRequest request) {
+    Map<String, Long> shuntsuCount = new HashMap<>();
+    for (List<Tile> meld : request.getTiles()) {
+      if (isShuntsu(meld)) {
+        String key = meld.get(0).getSuit() + meld.get(0).getNumber();
+        shuntsuCount.put(key, shuntsuCount.getOrDefault(key, 0L) + 1);
+      }
+    }
+    return shuntsuCount.values().stream().filter(count -> count >= 2).count() == 1;
+  }
+
+  private boolean isRyanpeikou(AnswerRequest request) {
+    Map<String, Long> shuntsuCount = new HashMap<>();
+    for (List<Tile> meld : request.getTiles()) {
+      if (isShuntsu(meld)) {
+        String key = meld.get(0).getSuit() + meld.get(0).getNumber();
+        shuntsuCount.put(key, shuntsuCount.getOrDefault(key, 0L) + 1);
+      }
+    }
+    return shuntsuCount.values().stream().filter(count -> count >= 2).count() == 2;
   }
 
 }
