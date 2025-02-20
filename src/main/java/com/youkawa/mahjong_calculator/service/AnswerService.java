@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
@@ -118,6 +119,19 @@ public class AnswerService {
       if (isIttsu(request)) {
         detectedYaku.add("一気通貫");
       }
+
+      if (isSanAnkou(request)) {
+        detectedYaku.add("三暗刻");
+      }
+
+      if (isSanshokudoujun(request)) {
+        detectedYaku.add("三色同順");
+      }
+
+      if (isSanshokudoukou(request)) {
+        detectedYaku.add("三色同刻");
+      }
+
     }
 
     if (isHonitsu(request)) {
@@ -367,6 +381,44 @@ public class AnswerService {
       }
     }
     return shuntsues.values().stream().anyMatch(set -> set.contains(1) && set.contains(4) && set.contains(7));
+  }
+
+  private boolean isSanAnkou(AnswerRequest request) {
+    int ankouCount = 0;
+    for (List<Tile> tiles : request.getTiles()) {
+      if (tiles.stream().allMatch(tile -> !hasNaki(tile))) {
+        ankouCount++;
+      }
+    }
+    return ankouCount == 3;
+  }
+
+  private boolean isSanshokudoukou(AnswerRequest request) {
+    List<List<Tile>> ankouList = request.getTiles().stream().filter(tiles -> isKoutsu(tiles)).toList();
+
+    if (ankouList.size() < 3) {
+      return false;
+    }
+
+    int number = ankouList.get(0).get(0).getNumber();
+    return number == ankouList.get(1).get(0).getNumber() && number == ankouList.get(2).get(0).getNumber();
+  }
+
+  private boolean isSanshokudoujun(AnswerRequest request) {
+    List<List<Tile>> shuntsuList = request.getTiles().stream().filter(tiles -> isShuntsu(tiles)).toList();
+
+    if (shuntsuList.size() < 3) {
+      return false;
+    }
+
+    int number = shuntsuList.get(0).get(0).getNumber();
+    String suit1 = shuntsuList.get(0).get(0).getSuit();
+    String suit2 = shuntsuList.get(1).get(0).getSuit();
+    String suit3 = shuntsuList.get(2).get(0).getSuit();
+
+    return number == shuntsuList.get(1).get(0).getNumber()
+        && number == shuntsuList.get(2).get(0).getNumber()
+        && !suit1.equals(suit2) && !suit1.equals(suit3) && !suit2.equals(suit3);
   }
 
 }
