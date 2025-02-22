@@ -142,6 +142,10 @@ public class AnswerService {
       detectedYaku.add("清一色");
     }
 
+    if (isHonroutou(request)) {
+      detectedYaku.add("混老頭");
+    }
+
     return detectedYaku;
   }
 
@@ -419,6 +423,19 @@ public class AnswerService {
     return number == shuntsuList.get(1).get(0).getNumber()
         && number == shuntsuList.get(2).get(0).getNumber()
         && !suit1.equals(suit2) && !suit1.equals(suit3) && !suit2.equals(suit3);
+  }
+
+  private boolean isHonroutou(AnswerRequest request) {
+    List<List<Tile>> tileList = request.getTiles();
+    boolean hasChanchu = false;
+    for (List<Tile> meld : tileList) {
+      for (Tile tile : meld) {
+        if (!isYaochu(tile)) {
+          hasChanchu = true;
+        }
+      }
+    }
+    return !hasChanchu;
   }
 
 }
