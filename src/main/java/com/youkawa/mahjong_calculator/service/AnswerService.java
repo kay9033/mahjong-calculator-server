@@ -132,6 +132,10 @@ public class AnswerService {
         detectedYaku.add("三色同刻");
       }
 
+      if (isShousangen(request)) {
+        detectedYaku.add("小三元");
+      }
+
     }
 
     if (isHonitsu(request)) {
@@ -197,6 +201,10 @@ public class AnswerService {
 
   private boolean isYaochu(Tile tile) {
     return tile.getSuit().equals("z") || tile.getNumber() == 1 || tile.getNumber() == 9;
+  }
+
+  private boolean isSangenpai(Tile tile) {
+    return tile.getSuit().equals("z") && (tile.getNumber() == 5 || tile.getNumber() == 6 || tile.getNumber() == 7);
   }
 
   private boolean isHonitsu(AnswerRequest request) {
@@ -337,7 +345,7 @@ public class AnswerService {
   private boolean isHatsu(AnswerRequest request) {
     boolean hasHatsu = false;
     for (List<Tile> meld : request.getTiles()) {
-      if (isKoutsu(meld) && meld.get(0).getSuit().equals("z") && meld.get(0).getNumber() == 5) {
+      if (isKoutsu(meld) && meld.get(0).getSuit().equals("z") && meld.get(0).getNumber() == 6) {
         hasHatsu = true;
       }
     }
@@ -347,7 +355,7 @@ public class AnswerService {
   private boolean isChun(AnswerRequest request) {
     boolean hasChun = false;
     for (List<Tile> meld : request.getTiles()) {
-      if (isKoutsu(meld) && meld.get(0).getSuit().equals("z") && meld.get(0).getNumber() == 5) {
+      if (isKoutsu(meld) && meld.get(0).getSuit().equals("z") && meld.get(0).getNumber() == 7) {
         hasChun = true;
       }
     }
@@ -436,6 +444,18 @@ public class AnswerService {
       }
     }
     return !hasChanchu;
+  }
+
+  private boolean isShousangen(AnswerRequest request) {
+    int sangenCount = 0;
+    for (List<Tile> meld : request.getTiles()) {
+      for (Tile tile : meld) {
+        if (isSangenpai(tile)) {
+          sangenCount++;
+        }
+      }
+    }
+    return sangenCount == 8;
   }
 
 }
