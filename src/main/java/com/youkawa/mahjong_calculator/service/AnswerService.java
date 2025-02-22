@@ -57,7 +57,7 @@ public class AnswerService {
   }
 
   private boolean iswinningHand(AnswerRequest request) {
-    if (isTitoitsu(request)) {
+    if (hasTitoitsu(request)) {
       return true;
     }
 
@@ -73,80 +73,80 @@ public class AnswerService {
   private List<String> detectYaku(AnswerRequest request) {
     List<String> detectedYaku = new ArrayList<>();
 
-    if (isTitoitsu(request)) {
+    if (hasTitoitsu(request)) {
       detectedYaku.add("七対子");
     } else {
-      if (isToitoi(request)) {
+      if (hasToitoi(request)) {
         detectedYaku.add("対々和");
       }
 
-      if (isPinfu(request)) {
+      if (hasPinfu(request)) {
         detectedYaku.add("平和");
       }
 
-      if (isTanyao(request)) {
+      if (hasTanyao(request)) {
         detectedYaku.add("断么九");
       }
 
-      if (isChanta(request)) {
+      if (hasChanta(request)) {
         detectedYaku.add("チャンタ");
       }
 
-      if (isJunchan(request)) {
+      if (hasJunchan(request)) {
         detectedYaku.add("純チャン");
       }
 
-      if (isHaku(request)) {
+      if (hasHaku(request)) {
         detectedYaku.add("白");
       }
 
-      if (isHatsu(request)) {
+      if (hasHatsu(request)) {
         detectedYaku.add("發");
       }
 
-      if (isChun(request)) {
+      if (hasChun(request)) {
         detectedYaku.add("中");
       }
 
-      if (isIipeikou(request)) {
+      if (hasIipeikou(request)) {
         detectedYaku.add("一盃口");
       }
 
-      if (isRyanpeikou(request)) {
+      if (hasRyanpeikou(request)) {
         detectedYaku.add("二盃口");
       }
 
-      if (isIttsu(request)) {
+      if (hasIttsu(request)) {
         detectedYaku.add("一気通貫");
       }
 
-      if (isSanAnkou(request)) {
+      if (hasSanAnkou(request)) {
         detectedYaku.add("三暗刻");
       }
 
-      if (isSanshokudoujun(request)) {
+      if (hasSanshokudoujun(request)) {
         detectedYaku.add("三色同順");
       }
 
-      if (isSanshokudoukou(request)) {
+      if (hasSanshokudoukou(request)) {
         detectedYaku.add("三色同刻");
       }
 
-      if (isShousangen(request)) {
+      if (hasShousangen(request)) {
         detectedYaku.add("小三元");
       }
 
     }
 
-    if (isHonitsu(request)) {
+    if (hasHonitsu(request)) {
       detectedYaku.add("混一色");
     }
 
-    if (isChinitsu(request)) {
+    if (hasChinitsu(request)) {
       detectedYaku.add("清一色");
     }
 
-    if (isHonroutou(request)) {
+    if (hasHonroutou(request)) {
       detectedYaku.add("混老頭");
     }
 
@@ -207,7 +207,7 @@ public class AnswerService {
     return tile.getSuit().equals("z") && (tile.getNumber() == 5 || tile.getNumber() == 6 || tile.getNumber() == 7);
   }
 
-  private boolean isHonitsu(AnswerRequest request) {
+  private boolean hasHonitsu(AnswerRequest request) {
     boolean isHonor = false;
     String suit = null;
     for (List<Tile> meld : request.getTiles()) {
@@ -226,7 +226,7 @@ public class AnswerService {
     return isHonor;
   }
 
-  private boolean isChinitsu(AnswerRequest request) {
+  private boolean hasChinitsu(AnswerRequest request) {
     String suit = null;
     for (List<Tile> meld : request.getTiles()) {
       for (Tile tile : meld) {
@@ -244,7 +244,7 @@ public class AnswerService {
     return true;
   }
 
-  private boolean isChanta(AnswerRequest request) {
+  private boolean hasChanta(AnswerRequest request) {
     for (List<Tile> meld : request.getTiles()) {
       boolean hasYaochu = false;
       for (Tile tile : meld) {
@@ -259,7 +259,7 @@ public class AnswerService {
     return true;
   }
 
-  private boolean isJunchan(AnswerRequest request) {
+  private boolean hasJunchan(AnswerRequest request) {
     for (List<Tile> meld : request.getTiles()) {
       boolean hasYaochu = false;
       for (Tile tile : meld) {
@@ -277,7 +277,7 @@ public class AnswerService {
     return true;
   }
 
-  private boolean isToitoi(AnswerRequest request) {
+  private boolean hasToitoi(AnswerRequest request) {
     for (List<Tile> meld : request.getTiles()) {
       if (meld.size() == 3) {
         if (!isKoutsu(meld)) {
@@ -288,7 +288,7 @@ public class AnswerService {
     return true;
   }
 
-  private boolean isPinfu(AnswerRequest request) {
+  private boolean hasPinfu(AnswerRequest request) {
     for (List<Tile> meld : request.getTiles()) {
       if (meld.size() == 3) {
         if (!isShuntsu(meld)) {
@@ -309,7 +309,7 @@ public class AnswerService {
     return true;
   }
 
-  private boolean isTitoitsu(AnswerRequest request) {
+  private boolean hasTitoitsu(AnswerRequest request) {
     if (request.getTiles().size() != 7) {
       return false;
     }
@@ -321,7 +321,7 @@ public class AnswerService {
     return true;
   }
 
-  private boolean isTanyao(AnswerRequest request) {
+  private boolean hasTanyao(AnswerRequest request) {
     for (List<Tile> meld : request.getTiles()) {
       for (Tile tile : meld) {
         if (isYaochu(tile)) {
@@ -332,7 +332,7 @@ public class AnswerService {
     return true;
   }
 
-  private boolean isHaku(AnswerRequest request) {
+  private boolean hasHaku(AnswerRequest request) {
     boolean hasHaku = false;
     for (List<Tile> meld : request.getTiles()) {
       if (isKoutsu(meld) && meld.get(0).getSuit().equals("z") && meld.get(0).getNumber() == 5) {
@@ -342,7 +342,7 @@ public class AnswerService {
     return hasHaku;
   }
 
-  private boolean isHatsu(AnswerRequest request) {
+  private boolean hasHatsu(AnswerRequest request) {
     boolean hasHatsu = false;
     for (List<Tile> meld : request.getTiles()) {
       if (isKoutsu(meld) && meld.get(0).getSuit().equals("z") && meld.get(0).getNumber() == 6) {
@@ -352,7 +352,7 @@ public class AnswerService {
     return hasHatsu;
   }
 
-  private boolean isChun(AnswerRequest request) {
+  private boolean hasChun(AnswerRequest request) {
     boolean hasChun = false;
     for (List<Tile> meld : request.getTiles()) {
       if (isKoutsu(meld) && meld.get(0).getSuit().equals("z") && meld.get(0).getNumber() == 7) {
@@ -362,7 +362,7 @@ public class AnswerService {
     return hasChun;
   }
 
-  private boolean isIipeikou(AnswerRequest request) {
+  private boolean hasIipeikou(AnswerRequest request) {
     Map<String, Long> shuntsuCount = new HashMap<>();
     for (List<Tile> meld : request.getTiles()) {
       if (isShuntsu(meld)) {
@@ -373,7 +373,7 @@ public class AnswerService {
     return shuntsuCount.values().stream().filter(count -> count >= 2).count() == 1;
   }
 
-  private boolean isRyanpeikou(AnswerRequest request) {
+  private boolean hasRyanpeikou(AnswerRequest request) {
     Map<String, Long> shuntsuCount = new HashMap<>();
     for (List<Tile> meld : request.getTiles()) {
       if (isShuntsu(meld)) {
@@ -384,7 +384,7 @@ public class AnswerService {
     return shuntsuCount.values().stream().filter(count -> count >= 2).count() == 2;
   }
 
-  private boolean isIttsu(AnswerRequest request) {
+  private boolean hasIttsu(AnswerRequest request) {
     Map<String, Set<Integer>> shuntsues = new HashMap<>();
     for (List<Tile> meld : request.getTiles()) {
       if (isShuntsu(meld)) {
@@ -395,7 +395,7 @@ public class AnswerService {
     return shuntsues.values().stream().anyMatch(set -> set.contains(1) && set.contains(4) && set.contains(7));
   }
 
-  private boolean isSanAnkou(AnswerRequest request) {
+  private boolean hasSanAnkou(AnswerRequest request) {
     int ankouCount = 0;
     for (List<Tile> tiles : request.getTiles()) {
       if (tiles.stream().allMatch(tile -> !hasNaki(tile))) {
@@ -405,7 +405,7 @@ public class AnswerService {
     return ankouCount == 3;
   }
 
-  private boolean isSanshokudoukou(AnswerRequest request) {
+  private boolean hasSanshokudoukou(AnswerRequest request) {
     List<List<Tile>> ankouList = request.getTiles().stream().filter(tiles -> isKoutsu(tiles)).toList();
 
     if (ankouList.size() < 3) {
@@ -416,7 +416,7 @@ public class AnswerService {
     return number == ankouList.get(1).get(0).getNumber() && number == ankouList.get(2).get(0).getNumber();
   }
 
-  private boolean isSanshokudoujun(AnswerRequest request) {
+  private boolean hasSanshokudoujun(AnswerRequest request) {
     List<List<Tile>> shuntsuList = request.getTiles().stream().filter(tiles -> isShuntsu(tiles)).toList();
 
     if (shuntsuList.size() < 3) {
@@ -433,7 +433,7 @@ public class AnswerService {
         && !suit1.equals(suit2) && !suit1.equals(suit3) && !suit2.equals(suit3);
   }
 
-  private boolean isHonroutou(AnswerRequest request) {
+  private boolean hasHonroutou(AnswerRequest request) {
     List<List<Tile>> tileList = request.getTiles();
     boolean hasChanchu = false;
     for (List<Tile> meld : tileList) {
@@ -446,7 +446,7 @@ public class AnswerService {
     return !hasChanchu;
   }
 
-  private boolean isShousangen(AnswerRequest request) {
+  private boolean hasShousangen(AnswerRequest request) {
     int sangenCount = 0;
     for (List<Tile> meld : request.getTiles()) {
       for (Tile tile : meld) {
