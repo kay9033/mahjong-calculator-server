@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
@@ -134,6 +133,10 @@ public class AnswerService {
 
       if (hasShousangen(request)) {
         detectedYaku.add("小三元");
+      }
+
+      if (hasSankantsu(request)) {
+        detectedYaku.add("三槓子");
       }
 
     }
@@ -456,6 +459,18 @@ public class AnswerService {
       }
     }
     return sangenCount == 8;
+  }
+
+  private boolean hasSankantsu(AnswerRequest request) {
+    int nakiCount = 0;
+    for (List<Tile> meld : request.getTiles()) {
+      for (Tile tile : meld) {
+        if (hasNaki(tile)) {
+          nakiCount++;
+        }
+      }
+    }
+    return nakiCount == 3;
   }
 
 }
