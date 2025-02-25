@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.youkawa.mahjong_calculator.model.AnswerRequest;
 import com.youkawa.mahjong_calculator.model.AnswerResponse;
 import com.youkawa.mahjong_calculator.model.Question;
+import com.youkawa.mahjong_calculator.model.Tile;
 
 @Service
 public class AnswerService {
@@ -25,13 +26,13 @@ public class AnswerService {
       return new AnswerResponse(false, null, null, null, "お題が見つかりません");
     }
 
-    if (!yakuService.iswinningHand(request)) {
+    if (!yakuService.iswinningHand(request.getTiles())) {
       return new AnswerResponse(false, null, null, null, "和了形になっていません");
     }
 
     List<String> missingYaku = new ArrayList<>();
     List<String> extraYaku = new ArrayList<>();
-    List<String> userYaku = detectYaku(request);
+    List<String> userYaku = yakuService.checkYaku(request.getTiles());
 
     for (String yaku : question.getYaku()) {
       if (!userYaku.contains(yaku)) {
@@ -49,93 +50,6 @@ public class AnswerService {
 
     return new AnswerResponse(correct, missingYaku, extraYaku, userYaku, message);
 
-  }
-
-  private List<String> detectYaku(AnswerRequest request) {
-    List<String> detectedYaku = new ArrayList<>();
-
-    if (yakuService.hasTitoitsu(request)) {
-      detectedYaku.add("七対子");
-    } else {
-      if (yakuService.hasToitoi(request)) {
-        detectedYaku.add("対々和");
-      }
-
-      if (yakuService.hasPinfu(request)) {
-        detectedYaku.add("平和");
-      }
-
-      if (yakuService.hasTanyao(request)) {
-        detectedYaku.add("断么九");
-      }
-
-      if (yakuService.hasChanta(request)) {
-        detectedYaku.add("チャンタ");
-      }
-
-      if (yakuService.hasJunchan(request)) {
-        detectedYaku.add("純チャン");
-      }
-
-      if (yakuService.hasHaku(request)) {
-        detectedYaku.add("白");
-      }
-
-      if (yakuService.hasHatsu(request)) {
-        detectedYaku.add("發");
-      }
-
-      if (yakuService.hasChun(request)) {
-        detectedYaku.add("中");
-      }
-
-      if (yakuService.hasIipeikou(request)) {
-        detectedYaku.add("一盃口");
-      }
-
-      if (yakuService.hasRyanpeikou(request)) {
-        detectedYaku.add("二盃口");
-      }
-
-      if (yakuService.hasIttsu(request)) {
-        detectedYaku.add("一気通貫");
-      }
-
-      if (yakuService.hasSanAnkou(request)) {
-        detectedYaku.add("三暗刻");
-      }
-
-      if (yakuService.hasSanshokudoujun(request)) {
-        detectedYaku.add("三色同順");
-      }
-
-      if (yakuService.hasSanshokudoukou(request)) {
-        detectedYaku.add("三色同刻");
-      }
-
-      if (yakuService.hasShousangen(request)) {
-        detectedYaku.add("小三元");
-      }
-
-      if (yakuService.hasSankantsu(request)) {
-        detectedYaku.add("三槓子");
-      }
-
-    }
-
-    if (yakuService.hasHonitsu(request)) {
-      detectedYaku.add("混一色");
-    }
-
-    if (yakuService.hasChinitsu(request)) {
-      detectedYaku.add("清一色");
-    }
-
-    if (yakuService.hasHonroutou(request)) {
-      detectedYaku.add("混老頭");
-    }
-
-    return detectedYaku;
   }
 
 }

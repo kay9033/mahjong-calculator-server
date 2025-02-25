@@ -9,7 +9,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Question {
-  private int id;
   private List<String> yaku;
   private Map<String, String> conditions;
   private String winType;

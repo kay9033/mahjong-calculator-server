@@ -16,6 +16,6 @@ public class QuestionController {
 
   @GetMapping("/question")
   public Question getQuestion() {
-    return questionService.getRandomQuestion();
+    return questionService.generaQuestion();
   }
 }
