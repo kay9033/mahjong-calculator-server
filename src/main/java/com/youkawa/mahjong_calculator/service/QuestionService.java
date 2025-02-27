@@ -32,7 +32,7 @@ public class QuestionService {
 
     while (!iswinningHand) {
       List<List<Tile>> hand = genarateHand();
-      if (yakuService.iswinningHand(hand)) {
+      if (yakuService.iswinningHand(hand) && yakuService.checkYaku(hand).size() >= 2) {
         iswinningHand = true;
         yaku = yakuService.checkYaku(hand);
       }
@@ -63,7 +63,7 @@ public class QuestionService {
   private List<List<Tile>> genarateHand() {
     List<List<Tile>> hand = new ArrayList<>();
 
-    if (random.nextBoolean()) {
+    if (random.nextInt(10) < 2) {
       for (int i = 0; i < 6; i++) {
         hand.add(generateToitsu());
       }
@@ -86,7 +86,7 @@ public class QuestionService {
     int number;
     List<Tile> meld = new ArrayList<>();
 
-    if (suit == "z") {
+    if (suit.equals("z")) {
       number = random.nextInt(7) + 1;
     } else {
       number = random.nextInt(9) + 1;
@@ -97,24 +97,24 @@ public class QuestionService {
         tile = new Tile(suit, number, NAKI_TYPE.get(random.nextInt(SUITS.size() - 1)));
       } else {
         tile = new Tile(suit, number, null);
-        meld.add(tile);
       }
+      meld.add(tile);
     }
     return meld;
   }
 
   private List<Tile> generateShuntsu() {
-    String suit = SUITS.get(random.nextInt(SUITS.size() - 2));
-    int number = random.nextInt(3) * 3 + 1;
+    String suit = SUITS.get(random.nextInt(3));
+    int number = random.nextInt(7) + 1;
     List<Tile> meld = new ArrayList<>();
     for (int i = 0; i < 3; i++) {
       Tile tile;
       if (i == 2) {
-        tile = new Tile(suit, number + i, NAKI_TYPE.get(random.nextInt(SUITS.size() - 1)));
+        tile = new Tile(suit, number + i, NAKI_TYPE.get(random.nextInt(NAKI_TYPE.size())));
       } else {
         tile = new Tile(suit, number + i, null);
-        meld.add(tile);
       }
+      meld.add(tile);
     }
     return meld;
   }
