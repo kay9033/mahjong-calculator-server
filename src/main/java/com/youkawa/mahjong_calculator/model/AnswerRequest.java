@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class AnswerRequest {
-  private int questionId;
+  private List<String> yakuList;
   private List<List<Tile>> tiles;
   private String winType;
 }
